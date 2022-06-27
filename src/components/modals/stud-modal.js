@@ -35,7 +35,7 @@ let StudModal = ({setShow, data}) => {
 
     const dispatch = useDispatch()
     const [role, setRole] = useState("Frontend")
-    const [company, setCompany] = useState("KODE")
+    const [company, setCompany] = useState("Kreosoft")
     const [error, setError] = useState("")
     const id = useSelector(state => state.toolkit.countUser)
     const navigate = useNavigate();
