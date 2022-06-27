@@ -30,18 +30,19 @@ export const LinkContainer = styled.div`
 
 let Header = ({setShowRegistrationModal}) => {
 
-    const lastId = useSelector(state => state.toolkit.countUser)
+    const lastIdStudent = useSelector(state => state.toolkit.countUser)
+    const lastIdCompany = useSelector(state => state.toolkit.countCompany)
+    const isLastStudent = useSelector(state => state.toolkit.isLastCreatedStudent)
     const isAuth = useSelector(state => state.toolkit.isAuth)
     const navigate = useNavigate();
     const dispatch = useDispatch()
-
 
     const links = [{
         text: "список студентов",
         to: "/students"
     }, {
         text: "личный аккаунт",
-        to: `/student/${lastId}`
+        to: `/${isLastStudent ? `student/${lastIdStudent}` : `company/${lastIdCompany}`}`
     }, {
         text: "список компаний",
         to: "/"

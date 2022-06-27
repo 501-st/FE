@@ -5,6 +5,7 @@ const userSlice = createSlice({
     initialState: {
         countUser: 4,
         countCompany: 4,
+        isLastCreatedStudent: false,
         isAuth: false,
         students: [{
             id: 1,
@@ -77,11 +78,13 @@ const userSlice = createSlice({
             state.countUser += 1
             action.payload = {...action.payload, id: state.countUser}
             state.students.push(action.payload)
+            state.isLastCreatedStudent = true
         },
         addCompany(state, action) {
             state.countCompany += 1
             action.payload = {...action.payload, id: state.countCompany}
             state.companies.push(action.payload)
+            state.isLastCreatedStudent = false
         },
         editUser(state, action){
             for (let i = 0; i < state.students.length; i++){
