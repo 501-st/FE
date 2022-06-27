@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import Modal from "../../ui-components/modal";
 import Text from "../../ui-components/text";
@@ -6,7 +6,7 @@ import Input from "../../ui-components/input";
 import {RowContainer} from "../header/header";
 import Button from "../../ui-components/button";
 import Select from "../../ui-components/select";
-
+import EmailValidator from "../../validators/email-validator";
 
 const Container = styled.div`
   border-radius: 5px;
@@ -16,7 +16,9 @@ const Container = styled.div`
   background-color: white;
 `;
 
-let RegistrationModal = ({setShow}) => {
+let RegistrationModal = ({setShow, setShowStudModal, setShowCompanyModal}) => {
+
+    const [role, setRole] = useState("Студент")
 
     const CancelPropagation = (event) => {
         event.stopPropagation()
@@ -24,20 +26,34 @@ let RegistrationModal = ({setShow}) => {
 
     const DoNotReloadPage = (event) => {
         event.preventDefault()
+        if (initials.name === "" || initials.surname === "" || initials.middleName === "") {
+            setInitials({...initials, error: "ФИО должно быть заполнено"})
+            return false
+        }
+        if (!EmailValidator(email, setEmail)) {
+            return false
+        }
+        if (role === "Студент")
+            setShowStudModal(true)
+        else
+            setShowCompanyModal(true)
         setShow(false)
     }
 
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState({
+        value: "",
+        error: ""
+    })
     const [initials, setInitials] = useState({
         name: "",
         surname: "",
         middleName: "",
         error: ""
     })
-    const [role, setRole] = useState("Студент")
+
 
     const [data, setData] = useState({
-        email: email,
+        email: email.value,
         role: role,
         initials: initials
     })
@@ -59,24 +75,27 @@ let RegistrationModal = ({setShow}) => {
                     <Text margin={"15px 0 7px 0"} fontSize={"14px"}>
                         Имя
                     </Text>
-                    <Input value={initials.name} onChange={(e) => (setInitials({...initials, name: e.target.value}))}
+                    <Input value={initials.name}
+                           onChange={(e) => (setInitials({...initials, name: e.target.value, error: ""}))}
                            margin={"0 0 5px 0"} width={"100%"}/>
                     <Text margin={"15px 0 7px 0"} fontSize={"14px"}>
                         Фамилия
                     </Text>
                     <Input value={initials.surname}
-                           onChange={(e) => (setInitials({...initials, surname: e.target.value}))} margin={"0 0 5px 0"}
+                           onChange={(e) => (setInitials({...initials, surname: e.target.value, error: ""}))}
+                           margin={"0 0 5px 0"}
                            width={"100%"}/>
                     <Text margin={"15px 0 7px 0"} fontSize={"14px"}>
                         Отчество
                     </Text>
                     <Input value={initials.middleName}
-                           onChange={(e) => (setInitials({...initials, middleName: e.target.value}))}
+                           onChange={(e) => (setInitials({...initials, middleName: e.target.value, error: ""}))}
                            margin={"0 0 5px 0"} width={"100%"}/>
                     <Text margin={"15px 0 7px 0"} fontSize={"14px"}>
                         Email
                     </Text>
-                    <Input value={email} onChange={(e) => (setEmail(e.target.value))} margin={"0 0 5px 0"}
+                    <Input value={email.value} onChange={(e) => (setEmail({value: e.target.value, error: ""}))}
+                           margin={"0 0 5px 0"}
                            width={"100%"}/>
                     <Text margin={"15px 0 7px 0"} fontSize={"14px"}>
                         Роль
@@ -85,12 +104,38 @@ let RegistrationModal = ({setShow}) => {
                         <Select setRole={setRole} options={options}/>
                     </div>
                     <div style={{height: "1px", backgroundColor: "rgba(0, 0, 0, 0.25)"}}/>
-                    <RowContainer style={{columnGap: "5px", justifyContent: "flex-end", marginTop: "10px"}}>
+                    {initials.error &&
+                    <div style={{
+                        position: "absolute",
+                        bottom: 280,
+                        left: 0,
+                        right: 0,
+                        marginRight: "auto",
+                        marginLeft: "auto",
+                        textAlign: "center",
+                        color: "red"
+                    }}>
+                        {initials.error}
+                    </div>}
+                    {email.error &&
+                    <div style={{
+                        position: "absolute",
+                        bottom: 280,
+                        left: 0,
+                        right: 0,
+                        marginRight: "auto",
+                        marginLeft: "auto",
+                        textAlign: "center",
+                        color: "red"
+                    }}>
+                        {email.error}
+                    </div>}
+                    <RowContainer style={{columnGap: "5px", justifyContent: "flex-end", marginTop: "50px"}}>
                         <Button onClick={() => setShow(false)} borderRadius={"5px"} color={"white"}
                                 background={"#6C757D"} padding={"5px 14px"}>
                             Закрыть
                         </Button>
-                        <Button onSubmit={(event) => DoNotReloadPage(event)} borderRadius={"5px"} color={"white"}
+                        <Button onClick={(event) => DoNotReloadPage(event)} borderRadius={"5px"} color={"white"}
                                 background={"#1D6BB7"} padding={"5px 21px"}>
                             Далее
                         </Button>

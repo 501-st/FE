@@ -88,7 +88,7 @@ let LoginModal = ({setShow, setShowRegistrationModal}) => {
                         <Button onClick={() => setShow(false)} borderRadius={"5px"} color={"white"} background={"#6C757D"} padding={"5px 14px"}>
                             Закрыть
                         </Button>
-                        <Button onSubmit={(event) => DoNotReloadPage(event)} borderRadius={"5px"} color={"white"} background={"#1D6BB7"} padding={"5px 21px"}>
+                        <Button onClick={(event) => DoNotReloadPage(event)} borderRadius={"5px"} color={"white"} background={"#1D6BB7"} padding={"5px 21px"}>
                             Войти
                         </Button>
                     </RowContainer>

@@ -30,10 +30,10 @@ let Header = ({setShowLoginModal, setShowRegistrationModal}) => {
 
     const links = [{
         text: "список пользователей",
-        to: "/"
+        to: "/users"
     }, {
         text: "личный аккаунт",
-        to: "/"
+        to: "/account"
     }, {
         text: "список компаний",
         to: "/"
@@ -106,25 +106,6 @@ let Header = ({setShowLoginModal, setShowRegistrationModal}) => {
                         ))}
                     </div>
                 </Visible>
-                {/* <Hidden md lg xl xxl>
-                    <div style={{transition: "all", textAlign: "center"}}>
-                        <RowContainer onClick={() => setShow(!show)} style={{justifyContent: "center", cursor: "pointer"}}>
-                            <Text margin={"35px 0"} uppercase fontWeight={500} fontSize={"20px"}>
-                                меню
-                            </Text>
-                        </RowContainer>
-                        {links.map((item, index) => (
-                            <LinkContainer style={!show ? {overflow: "hidden", maxHeight: 0, borderTop: "0 solid rgba(0, 0, 0, 0)"} : {maxHeight: "100px", padding: "35px 0",
-                                borderTop: "1px solid rgba(0, 0, 0, 0.25)"}} key={index}>
-                                <Link to={item.to}>
-                                    <Text uppercase fontWeight={500} fontSize={"20px"}>
-                                        {item.text}
-                                    </Text>
-                                </Link>
-                            </LinkContainer>
-                        ))}
-                    </div>
-                </Hidden>*/}
             </ContainerHeader>
         </div>
     )

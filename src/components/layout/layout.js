@@ -4,6 +4,8 @@ import Header from "../header/header";
 import Footer from "../footer/footer";
 import LoginModal from "../modals/login-modal";
 import RegistrationModal from "../modals/registration-modal";
+import StudModal from "../modals/stud-modal";
+import CompanyModal from "../modals/company-modal";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -16,6 +18,8 @@ let Layout = ({children}) => {
 
     const [showLoginModal, setShowLoginModal] = useState(false)
     const [showRegistrationModal, setShowRegistrationModal] = useState(false)
+    const [showStudModal, setShowStudModal] = useState(false)
+    const [showCompanyModal, setShowCompanyModal] = useState(false)
 
     return (
         <Wrapper>
@@ -23,7 +27,9 @@ let Layout = ({children}) => {
             {children}
             <Footer/>
             {showLoginModal && <LoginModal setShow={setShowLoginModal} setShowRegistrationModal={setShowRegistrationModal}/>}
-            {showRegistrationModal && <RegistrationModal setShow={setShowRegistrationModal}/>}
+            {showRegistrationModal && <RegistrationModal setShowStudModal={setShowStudModal} setShow={setShowRegistrationModal} setShowCompanyModal={setShowCompanyModal}/>}
+            {showStudModal && <StudModal setShow={setShowStudModal}/>}
+            {showCompanyModal && <CompanyModal setShow={setShowCompanyModal}/>}
         </Wrapper>
     )
 }

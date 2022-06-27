@@ -6,7 +6,6 @@ import Input from "../ui-components/input";
 import {RowContainer} from "../components/header/header";
 import Button from "../ui-components/button";
 import {Col, Row} from "react-grid-system";
-import axios from "axios";
 
 export const Container = styled.div`
   background: #FFFFFF;
@@ -17,60 +16,104 @@ export const Container = styled.div`
   max-width: 1280px;
 `;
 
-const ListOfCompanies = () => {
+const ListOfUsers = () => {
 
     const [search, setSearch] = useState("")
-    const [companies, setCompanies] = useState([{
-        name: "Kreosoft",
+    const [users, setUsers] = useState([{
+        name: "Альберт",
+        course: 3,
+        company: "Kreosoft",
+        email: "albert@mail.ru"
     }, {
-        name: "NTR",
+        name: "Павел",
+        course: 1,
+        company: "NTR",
+        email: "pasha_biceps@mail.ru"
     }, {
-        name: "ЦФТ",
+        name: "Андрей",
+        course: 3,
+        company: "KODE",
+        email: "jumper228@mail.ru"
     }, {
-        name: "KODE",
+        name: "Артем",
+        course: 4,
+        company: "ЦФТ",
+        email: "Artemy_Li@mail.ru"
     },])
 
     const handleSubmit = () => {
-        setCompanies(companies.filter((item) => {
+        setUsers(users.filter((item) => {
             for (let key in item) {
                 if (item.hasOwnProperty(key) && String(item[key]).toLowerCase().indexOf(search.toLowerCase()) !== -1)
                     return 1
             }
         }))
-        axios.get(`https://hits-process.herokuapp.com/companies`)
-            .then(res => {console.log(res)}).catch(error => console.log(error))
     }
 
-    const [reserve, setReserve] = useState(companies)
+    const [reserve, setReserve] = useState(users)
 
     return (
         <Layout>
             <Container>
                 <Text uppercase fontSize={"20px"} fontWeight={700} margin={"0 0 18px 0"}>
-                    компании
+                    Пользователи
                 </Text>
                 <div style={{height: "1px", backgroundColor: "rgba(0, 0, 0, 0.25)"}}/>
                 <RowContainer style={{margin: "15px 0"}}>
                     <Input margin={"0 15px 0 0"} width={"280px"} value={search}
                            onChange={(e) => {
                                setSearch(e.target.value);
-                               setCompanies(reserve)
+                               setUsers(reserve)
                            }} placeholder={"Введите значение"}/>
                     <Button onClick={handleSubmit} borderRadius={"5px"} color={"white"} background={"#1D6BB7"}
                             padding={"5px 21px"}>
                         Применить
                     </Button>
                 </RowContainer>
-                <Text fontSize={"17px"} fontWeight={800}>
-                    Название
-                </Text>
-                {companies.length > 0 ? companies.map((item, index) => (
+                <Row style={{marginBottom: "10px"}}>
+                    <Col md={2}>
+                        <Text fontSize={"17px"} fontWeight={800}>
+                            Имя
+                        </Text>
+                    </Col>
+                    <Col md={1}>
+                        <Text fontSize={"17px"} fontWeight={800}>
+                            Курс
+                        </Text>
+                    </Col>
+                    <Col md={2}>
+                        <Text fontSize={"17px"} fontWeight={800}>
+                            Компания
+                        </Text>
+                    </Col>
+                    <Col md={3}>
+                        <Text fontSize={"17px"} fontWeight={800}>
+                            Почта
+                        </Text>
+                    </Col>
+                </Row>
+                {users.length > 0 ? users.map((item, index) => (
                         <div key={index}>
                             <div style={{height: "1px", backgroundColor: "rgba(0, 0, 0, 0.25)"}}/>
                             <Row style={{padding: "8px 0"}} align={"center"}>
                                 <Col md={2}>
                                     <Text style={{display: "flex", flex: 1}} fontSize={"17px"}>
                                         {item.name}
+                                    </Text>
+                                </Col>
+                                <Col md={1}>
+                                    <Text style={{display: "flex", flex: 1}} fontSize={"17px"}>
+                                        {item.course}
+                                    </Text>
+                                </Col>
+                                <Col md={2}>
+                                    <Text style={{display: "flex", flex: 1}} fontSize={"17px"}>
+                                        {item.company}
+                                    </Text>
+                                </Col>
+                                <Col md={3}>
+                                    <Text style={{display: "flex", flex: 2}} fontSize={"17px"}>
+                                        {item.email}
                                     </Text>
                                 </Col>
                                 <Col md={4}>
@@ -83,11 +126,11 @@ const ListOfCompanies = () => {
                         </div>
                     ))
                     : <Text style={{display: "flex", flex: 2}} fontSize={"17px"}>
-                        Компании не найдены
+                        Пользователей не найдено
                     </Text>}
             </Container>
         </Layout>
     );
 };
 
-export default ListOfCompanies;
+export default ListOfUsers;

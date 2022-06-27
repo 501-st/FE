@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "../index.css"
 import Text from "./text";
-import {LinkContainer, RowContainer} from "../components/header/header";
+import {RowContainer} from "../components/header/header";
 import styled from "styled-components";
 import ArrowDown from "../ui-components/images/arrowDown.png"
 import Image from "./image";
@@ -12,7 +12,24 @@ const ModRowContainer = styled(RowContainer)`
   border-radius: 2px;
 `;
 
-const Select = ({options, setRole}) => {
+const SelectContainer = styled.div`
+  position: absolute;
+  z-index: 2;
+  background-color: white;
+  width: inherit;
+  border: 0.25px solid rgba(0,0,0,0.5);
+  border-top: none;
+`;
+
+const SelectItem = styled.div`
+  padding: 10px 5px;
+  cursor: pointer;
+  :hover{
+    background-color: peachpuff;
+  }
+`;
+
+const Select = ({options, setRole = undefined}) => {
 
     const [show, setShow] = useState({
         visible: false,
@@ -20,7 +37,7 @@ const Select = ({options, setRole}) => {
     })
 
     return (
-        <div style={{width: "170px"}}>
+        <div style={{width: "170px", position: "relative"}}>
             <ModRowContainer onClick={() => setShow({...show, visible: !show.visible})}
                              style={{cursor: "pointer", justifyContent: "space-between", padding: "3px 5px"}}>
                 <Text color={"black"} fontWeight={300} fontSize={"12px"}>
@@ -30,19 +47,16 @@ const Select = ({options, setRole}) => {
                     <Image src={ArrowDown}/>
                 </div>
             </ModRowContainer>
-            {options.map((item, index) => (
-                <div key={index}>
-                    {<LinkContainer onClick={() => {setShow({value: item.text, visible: false}); setRole(item.text)}}
-                        style={!show.visible ? {overflow: "hidden", maxHeight: 0, textAlign: "start"} : {
-                            maxHeight: "50px", padding: "10px 5px",
-                            cursor: "pointer", textAlign: "start"
-                        }} key={index}>
+            <SelectContainer style={{display: show.visible ? "block" : "none"}}>
+                {options.map((item, index) => (
+                    <SelectItem key={index} onClick={() => {setShow({visible: false, value: item.text}); setRole(item.text)}}
+                    style={{display: show.visible ? "block" : "none"}}>
                         <Text color={"black"} fontWeight={300} fontSize={"12px"}>
                             {item.text}
                         </Text>
-                    </LinkContainer>}
-                </div>
-            ))}
+                    </SelectItem>
+                ))}
+            </SelectContainer>
         </div>
     )
 }
