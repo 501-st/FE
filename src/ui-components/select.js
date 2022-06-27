@@ -29,7 +29,7 @@ const SelectItem = styled.div`
   }
 `;
 
-const Select = ({options, setRole = undefined}) => {
+const Select = ({options, setRole }) => {
 
     const [show, setShow] = useState({
         visible: false,

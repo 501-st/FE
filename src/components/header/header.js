@@ -7,6 +7,9 @@ import Link from "../../ui-components/link";
 import {Hidden, useScreenClass, Visible} from "react-grid-system";
 import Menu from "../header/images/menu.png"
 import Button from "../../ui-components/button";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../store/reducer";
+import {useNavigate} from "react-router-dom";
 
 const ContainerHeader = styled.div`
   margin: 30px auto;
@@ -25,14 +28,20 @@ export const LinkContainer = styled.div`
   transition: all 0.4s ease-out;
 `;
 
-let Header = ({setShowLoginModal, setShowRegistrationModal}) => {
+let Header = ({setShowRegistrationModal}) => {
+
+    const lastId = useSelector(state => state.toolkit.countUser)
+    const isAuth = useSelector(state => state.toolkit.isAuth)
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
 
     const links = [{
-        text: "список пользователей",
-        to: "/users"
+        text: "список студентов",
+        to: "/students"
     }, {
         text: "личный аккаунт",
-        to: "/account"
+        to: `/student/${lastId}`
     }, {
         text: "список компаний",
         to: "/"
@@ -55,26 +64,42 @@ let Header = ({setShowLoginModal, setShowRegistrationModal}) => {
                             железное<br/>вымя
                         </Text>
                     </RowContainer>
-                    <RowContainer>
-                        <div style={{marginRight: "15px"}}>
-                            <Button onClick={() => setShowLoginModal(true)} padding={"10px 15px"} background={"yellow"}>
-                                Авторизация
+                    {!isAuth
+                        ? <RowContainer>
+                            {/*<div style={{marginRight: "15px"}}>
+                                <Button onClick={() => setShowLoginModal(true)} padding={"10px 15px"}
+                                        background={"yellow"}>
+                                    Авторизация
+                                </Button>
+                            </div>*/}
+                            <Button onClick={() => setShowRegistrationModal(true)} padding={"10px 15px"}
+                                    background={"lightgreen"}>
+                                Регистрация
                             </Button>
-                        </div>
-                        <Button onClick={() => setShowRegistrationModal(true)} padding={"10px 15px"} background={"lightgreen"}>
-                            Регистрация
-                        </Button>
-                    </RowContainer>
+                        </RowContainer>
+                        : <Button onClick={() => {
+                            dispatch(logout());
+                            navigate("/students")
+                        }} padding={"10px 15px"} background={"red"}>
+                            Выйти
+                        </Button>}
                 </RowContainer>
                 <div style={{height: "1px", backgroundColor: "rgba(0, 0, 0, 0.25)"}}/>
                 <Hidden xs sm md>
-                    <RowContainer style={{marginTop: "35px", justifyContent: "space-around"}}>
+                    <RowContainer style={{marginTop: "30px", justifyContent: "space-around"}}>
                         {links.map((item, index) => (
-                            <Link key={index} to={item.to}>
-                                <Text uppercase fontWeight={500} fontSize={"20px"}>
-                                    {item.text}
-                                </Text>
-                            </Link>
+                            <>
+                                {index !== 1 ? <Link key={index} to={item.to}>
+                                        <Text uppercase fontWeight={500} fontSize={"20px"}>
+                                            {index !== 1 ? item.text : isAuth && item.text}
+                                        </Text>
+                                    </Link>
+                                    : isAuth && <Link key={index} to={item.to}>
+                                    <Text uppercase fontWeight={500} fontSize={"20px"}>
+                                        {index !== 1 ? item.text : isAuth && item.text}
+                                    </Text>
+                                </Link>}
+                            </>
                         ))}
                     </RowContainer>
                 </Hidden>

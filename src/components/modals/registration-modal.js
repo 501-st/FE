@@ -16,7 +16,7 @@ const Container = styled.div`
   background-color: white;
 `;
 
-let RegistrationModal = ({setShow, setShowStudModal, setShowCompanyModal}) => {
+let RegistrationModal = ({setShow, setShowStudModal, setShowCompanyModal, setData}) => {
 
     const [role, setRole] = useState("Студент")
 
@@ -33,6 +33,12 @@ let RegistrationModal = ({setShow, setShowStudModal, setShowCompanyModal}) => {
         if (!EmailValidator(email, setEmail)) {
             return false
         }
+        setData({
+            name: initials.name,
+            surname: initials.surname,
+            middleName: initials.middleName,
+            email: email.value,
+        })
         if (role === "Студент")
             setShowStudModal(true)
         else
@@ -48,7 +54,7 @@ let RegistrationModal = ({setShow, setShowStudModal, setShowCompanyModal}) => {
         name: "",
         surname: "",
         middleName: "",
-        error: ""
+        error: "",
     })
 
     const options = [{

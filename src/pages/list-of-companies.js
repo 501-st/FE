@@ -7,6 +7,8 @@ import {RowContainer} from "../components/header/header";
 import Button from "../ui-components/button";
 import {Col, Row} from "react-grid-system";
 import axios from "axios";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 export const Container = styled.div`
   background: #FFFFFF;
@@ -20,19 +22,14 @@ export const Container = styled.div`
 const ListOfCompanies = () => {
 
     const [search, setSearch] = useState("")
-    const [companies, setCompanies] = useState([{
-        name: "Kreosoft",
-    }, {
-        name: "NTR",
-    }, {
-        name: "ЦФТ",
-    }, {
-        name: "KODE",
-    },])
+    const navigate = useNavigate();
+    const companies = useSelector(state => state.toolkit.companies)
+
+    const [companiesState, setCompaniesState] = useState(companies)
 
     const handleSubmit = () => {
         // eslint-disable-next-line array-callback-return
-        setCompanies(companies.filter((item) => {
+        setCompaniesState(companiesState.filter((item) => {
             for (let key in item) {
                 if (item.hasOwnProperty(key) && String(item[key]).toLowerCase().indexOf(search.toLowerCase()) !== -1)
                     return 1
@@ -43,7 +40,7 @@ const ListOfCompanies = () => {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const [reserve, setReserve] = useState(companies)
+    const [reserve, setReserve] = useState(companiesState)
 
     return (
         <Layout>
@@ -56,7 +53,7 @@ const ListOfCompanies = () => {
                     <Input margin={"0 15px 0 0"} width={"280px"} value={search}
                            onChange={(e) => {
                                setSearch(e.target.value);
-                               setCompanies(reserve)
+                               setCompaniesState(reserve)
                            }} placeholder={"Введите значение"}/>
                     <Button onClick={handleSubmit} borderRadius={"5px"} color={"white"} background={"#1D6BB7"}
                             padding={"5px 21px"}>
@@ -66,17 +63,17 @@ const ListOfCompanies = () => {
                 <Text fontSize={"17px"} fontWeight={800}>
                     Название
                 </Text>
-                {companies.length > 0 ? companies.map((item, index) => (
+                {companiesState.length > 0 ? companiesState.map((item, index) => (
                         <div key={index}>
                             <div style={{height: "1px", backgroundColor: "rgba(0, 0, 0, 0.25)"}}/>
                             <Row style={{padding: "8px 0"}} align={"center"}>
-                                <Col md={2}>
+                                <Col md={4}>
                                     <Text style={{display: "flex", flex: 1}} fontSize={"17px"}>
                                         {item.name}
                                     </Text>
                                 </Col>
                                 <Col md={4}>
-                                    <Button borderRadius={"5px"} color={"white"} background={"#1D6BB7"}
+                                    <Button onClick={() => navigate(`/company/${item.id}`)} borderRadius={"5px"} color={"white"} background={"#1D6BB7"}
                                             padding={"5px 21px"}>
                                         Личный аккаунт
                                     </Button>

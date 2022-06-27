@@ -16,9 +16,9 @@ const ModInput = styled.input`
   }
 `;
 
-const Input = ({placeholder, margin, width, onChange, type = "text"}) => {
+const Input = ({placeholder, margin, width, onChange, type = "text", value}) => {
     return(
-        <ModInput type={type} onChange={e => onChange(e)} width={width} placeholder={placeholder} margin={margin}/>
+        <ModInput value={value} type={type} onChange={e => onChange(e)} width={width} placeholder={placeholder} margin={margin}/>
     )
 }
 

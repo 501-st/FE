@@ -6,6 +6,10 @@ import {RowContainer} from "../header/header";
 import Button from "../../ui-components/button";
 import Select from "../../ui-components/select";
 import Textarea from "../../ui-components/textarea";
+import {useDispatch, useSelector} from "react-redux";
+import {addStudent, auth} from "../../store/reducer";
+import Input from "../../ui-components/input";
+import {useNavigate} from "react-router-dom";
 
 const Container = styled.div`
   border-radius: 5px;
@@ -15,15 +19,37 @@ const Container = styled.div`
   background-color: white;
 `;
 
-let StudModal = ({setShow}) => {
+export const optionsStack = [{
+    text: "Frontend"
+}, {
+    text: "Backend"
+}, {
+    text: "Full-stack"
+}, {
+    text: "ML"
+}, {
+    text: "Analytic"
+}]
 
+let StudModal = ({setShow, data}) => {
+
+    const dispatch = useDispatch()
     const [role, setRole] = useState("Frontend")
     const [company, setCompany] = useState("KODE")
-    console.log(role, company)
+    const [error, setError] = useState("")
+    const id = useSelector(state => state.toolkit.countUser)
+    const navigate = useNavigate();
+    const optionsCompany = []
+    const companies = useSelector(state => state.toolkit.companies)
+    for (let i = 0; i< companies.length; i++){
+        optionsCompany.push({text: companies[i].name})
+    }
+
     const [additional, setAdditional] = useState({
         experience: "",
         achievements: "",
-        rest: ""
+        rest: "",
+        course: ""
     })
 
     const CancelPropagation = (event) => {
@@ -32,32 +58,22 @@ let StudModal = ({setShow}) => {
 
     const DoNotReloadPage = (event) => {
         event.preventDefault()
+        if (additional.course > 4 || additional.course < 1 || additional.course === ""){
+            setError("На каком же курсе вы учитесь?")
+            return false
+        }
+        dispatch(addStudent({
+            ...data,
+            ...additional,
+            role: role,
+            company: company
+        }))
+        dispatch(auth())
+        navigate(`/student/${id + 1}`)
         setShow(false)
     }
 
-    const optionsStack = [{
-        text: "Frontend"
-    }, {
-        text: "Backend"
-    }, {
-        text: "Full-stack"
-    }, {
-        text: "ML"
-    }, {
-        text: "Analytic"
-    }]
 
-    const optionsCompany = [{
-        text: "KODE"
-    }, {
-        text: "rad_mad_robot"
-    }, {
-        text: "NTR"
-    }, {
-        text: "Kreosoft"
-    }, {
-        text: "ЦФТ"
-    }]
 
     return (
         <Modal setShow={setShow}>
@@ -73,6 +89,10 @@ let StudModal = ({setShow}) => {
                     <div style={{marginBottom: "15px"}}>
                         <Select setRole={setRole} options={optionsStack}/>
                     </div>
+                    <Text margin={"10px 0 7px 0"} fontSize={"14px"}>
+                        Курс
+                    </Text>
+                    <Input type={"number"} value={additional.course} onChange={(e) => (setAdditional({...additional, course: e.target.value}))} width={"100%"}/>
                     <Text margin={"10px 0 7px 0"} fontSize={"14px"}>
                         Опыт работы
                     </Text>
@@ -91,6 +111,19 @@ let StudModal = ({setShow}) => {
                     <div style={{marginBottom: "15px"}}>
                         <Select setRole={setCompany} options={optionsCompany}/>
                     </div>
+                    {error &&
+                    <div style={{
+                        position: "absolute",
+                        bottom: 240,
+                        left: 0,
+                        right: 0,
+                        marginRight: "auto",
+                        marginLeft: "auto",
+                        textAlign: "center",
+                        color: "red"
+                    }}>
+                        {error}
+                    </div>}
                     <RowContainer style={{columnGap: "5px", justifyContent: "flex-end", marginTop: "50px"}}>
                         <Button onClick={() => setShow(false)} borderRadius={"5px"} color={"white"}
                                 background={"#6C757D"} padding={"5px 14px"}>

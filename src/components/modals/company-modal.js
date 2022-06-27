@@ -4,8 +4,11 @@ import Modal from "../../ui-components/modal";
 import Text from "../../ui-components/text";
 import {RowContainer} from "../header/header";
 import Button from "../../ui-components/button";
-import Select from "../../ui-components/select";
 import Textarea from "../../ui-components/textarea";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {addCompany, auth} from "../../store/reducer";
+import Input from "../../ui-components/input";
 
 
 const Container = styled.div`
@@ -18,9 +21,12 @@ const Container = styled.div`
 
 let CompanyModal = ({setShow}) => {
 
-    const [company, setCompany] = useState("")
-    console.log(company)
-    const [additional, setAdditional] = useState("")
+    const [name, setName] = useState("")
+    const [error, setError] = useState("")
+    const id = useSelector(state => state.toolkit.countCompany)
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const [info, setInfo] = useState("")
 
     const CancelPropagation = (event) => {
         event.stopPropagation()
@@ -28,21 +34,18 @@ let CompanyModal = ({setShow}) => {
 
     const DoNotReloadPage = (event) => {
         event.preventDefault()
+        if (name === ""){
+            setError("Введите название компании")
+            return false
+        }
+        dispatch(addCompany({
+            name, info
+        }))
+        dispatch(auth())
+        navigate(`/company/${id + 1}`)
         setShow(false)
     }
 
-
-    const optionsCompany = [{
-        text: "KODE"
-    }, {
-        text: "rad_mad_robot"
-    }, {
-        text: "NTR"
-    }, {
-        text: "Kreosoft"
-    }, {
-        text: "ЦФТ"
-    }]
 
     return (
         <Modal setShow={setShow}>
@@ -55,13 +58,27 @@ let CompanyModal = ({setShow}) => {
                     <Text margin={"15px 0 7px 0"} fontSize={"14px"}>
                         Компания
                     </Text>
-                    <div style={{marginBottom: "15px"}}>
-                        <Select setRole={setCompany} options={optionsCompany}/>
-                    </div>
+                    <Text margin={"10px 0 7px 0"} fontSize={"14px"}>
+                        Название компании
+                    </Text>
+                    <Input value={name} onChange={(e) => {setName( e.target.value); setError("")}} width={"100%"}/>
                     <Text margin={"10px 0 7px 0"} fontSize={"14px"}>
                         Остальная информация
                     </Text>
-                    <Textarea value={additional} onChange={(e) => setAdditional(e.target.value)} width={"100%"}/>
+                    <Textarea value={info} onChange={(e) => setInfo(e.target.value)} width={"100%"}/>
+                    {error &&
+                    <div style={{
+                        position: "absolute",
+                        bottom: 370,
+                        left: 0,
+                        right: 0,
+                        marginRight: "auto",
+                        marginLeft: "auto",
+                        textAlign: "center",
+                        color: "red"
+                    }}>
+                        {error}
+                    </div>}
                     <RowContainer style={{columnGap: "5px", justifyContent: "flex-end", marginTop: "50px"}}>
                         <Button onClick={() => setShow(false)} borderRadius={"5px"} color={"white"}
                                 background={"#6C757D"} padding={"5px 14px"}>

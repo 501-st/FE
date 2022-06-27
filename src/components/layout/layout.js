@@ -20,16 +20,17 @@ let Layout = ({children}) => {
     const [showRegistrationModal, setShowRegistrationModal] = useState(false)
     const [showStudModal, setShowStudModal] = useState(false)
     const [showCompanyModal, setShowCompanyModal] = useState(false)
+    const [data, setData] = useState()
 
     return (
         <Wrapper>
-            <Header setShowLoginModal={setShowLoginModal} setShowRegistrationModal={setShowRegistrationModal}/>
+            <Header setShowRegistrationModal={setShowRegistrationModal}/>
             {children}
             <Footer/>
             {showLoginModal && <LoginModal setShow={setShowLoginModal} setShowRegistrationModal={setShowRegistrationModal}/>}
-            {showRegistrationModal && <RegistrationModal setShowStudModal={setShowStudModal} setShow={setShowRegistrationModal} setShowCompanyModal={setShowCompanyModal}/>}
-            {showStudModal && <StudModal setShow={setShowStudModal}/>}
-            {showCompanyModal && <CompanyModal setShow={setShowCompanyModal}/>}
+            {showRegistrationModal && <RegistrationModal setData={setData} setShowStudModal={setShowStudModal} setShow={setShowRegistrationModal} setShowCompanyModal={setShowCompanyModal}/>}
+            {showStudModal && <StudModal data={data} setShow={setShowStudModal}/>}
+            {showCompanyModal && <CompanyModal data={data} setShow={setShowCompanyModal}/>}
         </Wrapper>
     )
 }
