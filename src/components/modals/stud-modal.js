@@ -19,6 +19,7 @@ let StudModal = ({setShow}) => {
 
     const [role, setRole] = useState("Frontend")
     const [company, setCompany] = useState("KODE")
+    console.log(role, company)
     const [additional, setAdditional] = useState({
         experience: "",
         achievements: "",

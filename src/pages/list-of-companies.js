@@ -31,6 +31,7 @@ const ListOfCompanies = () => {
     },])
 
     const handleSubmit = () => {
+        // eslint-disable-next-line array-callback-return
         setCompanies(companies.filter((item) => {
             for (let key in item) {
                 if (item.hasOwnProperty(key) && String(item[key]).toLowerCase().indexOf(search.toLowerCase()) !== -1)
@@ -41,6 +42,7 @@ const ListOfCompanies = () => {
             .then(res => {console.log(res)}).catch(error => console.log(error))
     }
 
+    // eslint-disable-next-line no-unused-vars
     const [reserve, setReserve] = useState(companies)
 
     return (

@@ -33,6 +33,8 @@ let LoginModal = ({setShow, setShowRegistrationModal}) => {
         pass: pass
     })
 
+    console.log(data)
+
     useEffect(() => {
         setData({
             email: email,

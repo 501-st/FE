@@ -19,6 +19,7 @@ const Container = styled.div`
 let CompanyModal = ({setShow}) => {
 
     const [company, setCompany] = useState("")
+    console.log(company)
     const [additional, setAdditional] = useState("")
 
     const CancelPropagation = (event) => {

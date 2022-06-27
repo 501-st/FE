@@ -42,6 +42,7 @@ const ListOfUsers = () => {
     },])
 
     const handleSubmit = () => {
+        // eslint-disable-next-line array-callback-return
         setUsers(users.filter((item) => {
             for (let key in item) {
                 if (item.hasOwnProperty(key) && String(item[key]).toLowerCase().indexOf(search.toLowerCase()) !== -1)
@@ -50,6 +51,8 @@ const ListOfUsers = () => {
         }))
     }
 
+
+    // eslint-disable-next-line no-unused-vars
     const [reserve, setReserve] = useState(users)
 
     return (

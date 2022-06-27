@@ -4,10 +4,9 @@ import Logo from "../../components/header/images/logo.png"
 import Image from "../../ui-components/image";
 import Text from "../../ui-components/text";
 import Link from "../../ui-components/link";
-import {Hidden, Row, useScreenClass, Visible} from "react-grid-system";
+import {Hidden, useScreenClass, Visible} from "react-grid-system";
 import Menu from "../header/images/menu.png"
 import Button from "../../ui-components/button";
-import LoginModal from "../modals/login-modal";
 
 const ContainerHeader = styled.div`
   margin: 30px auto;

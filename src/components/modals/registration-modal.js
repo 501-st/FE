@@ -51,13 +51,6 @@ let RegistrationModal = ({setShow, setShowStudModal, setShowCompanyModal}) => {
         error: ""
     })
 
-
-    const [data, setData] = useState({
-        email: email.value,
-        role: role,
-        initials: initials
-    })
-
     const options = [{
         text: "Студент"
     }, {
