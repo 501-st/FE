@@ -32,7 +32,7 @@ const userSlice = createSlice({
             id: 3,
             name: "Андрей",
             course: 3,
-            company: "KODE",
+            company: "KODE aka red_mad_robot",
             surname: "Фролов",
             experience: "Атлет, миллиардер, плейбой",
             achievements: "Реализовал микросервис для отображения данных",
